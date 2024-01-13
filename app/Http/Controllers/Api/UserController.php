@@ -6,12 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use OpenApi\Annotations as OA;
+
 
 
 class UserController extends Controller
 {
     /**
-     * Displlay the specified resource.
+     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/user",
+     *     tags={"User"},
+     *     summary="Get current user",
+     *     @OA\Response(response="200", description="Retrieve current user data"),
+     *     security={
+     *         {"token": {}}
+     *     }
+     * )
      */
     public function show(Request $request)
     {
@@ -20,8 +31,18 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * 
-     * 
+     * @OA\Put(
+     *     path="/api/user",
+     *     tags={"User"},
+     *     summary="Updates a current user",
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     ),
+     *     security={
+     *         {"token": {}}
+     *     }
+     * )
      */
     public function update(UpdateUserRequest $request)
     {

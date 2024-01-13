@@ -48,6 +48,10 @@ Clone this repository
 
     php artisan test or sail artisan test
 
+## OpenAPI specification 
+
+Swagger UI be live at [http://localhost:8000/api/documentation](http://localhost:8000/api/documentation).
+
 
 ## Contributions
 

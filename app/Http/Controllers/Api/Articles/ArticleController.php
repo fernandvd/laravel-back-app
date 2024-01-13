@@ -18,6 +18,16 @@ class ArticleController extends Controller
 
     /**
      * Display global listing of the articles
+     * @OA\Get(
+     *     path="/api/articles",
+     *     tags={"Article"},
+     *     summary="Return a list of articles",
+     *     description="Returns a list of articles",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *     ),
+     * )
      */
     public function list(ArticleListRequest $request)
     {
@@ -44,6 +54,22 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *      path="/api/articles/feed",
+     *      operationId="getProjectsList",
+     *      tags={"Article"},
+     *      summary="Get list of articles",
+     *      description="Returns list of articles by current user",
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *       ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      security={
+     *           {"token": {}}
+     *      }
+     *     )
+     * 
      * Display article feed for the user.
      */
     public function feed(FeedRequest $request)
@@ -61,6 +87,45 @@ class ArticleController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *      path="/api/articles",
+     *      operationId="getProductsList",
+     *      tags={"Article"},
+     *      summary="Create article",
+     *      description="Returns a instance of article",
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+    *                   @OA\Property(
+    *                       property="title",
+    *                       type="string"
+    *                   ),
+    *                   @OA\Property(
+    *                       property="slug",
+    *                       type="string",
+    *                   ),
+    *                   @OA\Property(
+    *                       property="description",
+    *                       type="string"
+    *                   ),
+    *                   @OA\Property(
+    *                       property="body",
+    *                       type="string",
+    *                   ),
+    *                   example={"title": "title", "slug": "slug", "description": "description", "body": "body",}
+    *             )
+    *         )
+    *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation"
+     *      ),
+     *      security={
+     *          {"token": {}}
+     *      }
+     * 
+     * )
      * Store a newly created resource in storage.
      */
     public function create(NewArticleRequest $request)
@@ -84,6 +149,26 @@ class ArticleController extends Controller
 
     /**
      * Display the specified resource.
+     * @OA\Get(
+     *      path="/api/articles/{slug}",
+     *      tags={"Article"},
+     *      summary="Return a record of article",
+     *      description="Return a record of article",
+     *      @OA\Parameter(
+     *          name="slug",
+     *          description="Slug of article",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string",
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="succssful operation",
+     *      )
+     * )
+     * 
      */
     public function show(string $slug)
     {
@@ -95,6 +180,38 @@ class ArticleController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @OA\Put(
+     *      path="/api/article/{slug}",
+     *      tags={"Article"},
+     *      summary="Update article",
+     *      description="This can update a article",
+     *      @OA\Parameter(
+     *          name="slug",
+     *          in="path",
+     *          description="slug of article",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Invalid input",
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Article not found",
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *      ),
+     *      @OA\RequestBody(
+     *          description="Updated article object,",
+     *          required=true,
+     *      )
+     * )
      */
     public function update(UpdateArticleRequest $request, string $slug)
     {
@@ -110,6 +227,30 @@ class ArticleController extends Controller
 
 
     /**
+     * @OA\Delete(
+     *      path="/api/article/{slug}",
+     *      tags={"Article"},
+     *      summary="Delete article",
+     *      description="This delete article",
+     *      @OA\Parameter(
+     *          name="slug",
+     *          in="path",
+     *          description="Slug of article",
+     *          required=True,
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not found article",
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *      )
+     * )
+     * 
      * Remove the specified resource from storage.
      */
     public function delete(string $slug)

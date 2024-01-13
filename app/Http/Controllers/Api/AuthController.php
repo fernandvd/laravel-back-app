@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Annotations as OA;
+
 
 class AuthController extends Controller
 {
@@ -17,6 +19,32 @@ class AuthController extends Controller
      * 
      * @param NewUserRequest $request
      * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *     path="/api/users",
+     *     tags={"Auth"},
+     *     summary="Add new user",
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="username",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="email",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="password",
+    *                     type="string",
+    *                 ),
+    *                 example={"username": "username", "email": "user@example.com", "password": 12345678}
+    *             )
+    *         )
+    *     ),
+     *     @OA\Response(response="201", description="Create a user"),
+     * )
      */
     public function register(NewUserRequest $request)
     {
@@ -35,6 +63,29 @@ class AuthController extends Controller
      * 
      * @param \App\Http\Requests\LoginRequest $request
      * @return \App\Http\Resources\UserResource
+     * 
+     * @OA\Post(
+     *     path="/api/users/login",
+     *     tags={"Auth"},
+     *     summary="Login",
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="email",
+    *                     type="string"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="password",
+    *                     type="string",
+    *                 ),
+    *                 example={"email": "user@example.com", "password": "12345678"}
+    *             )
+    *         )
+    *     ),
+     *     @OA\Response(response="200", description="Login user"),
+     * )
      */
     public function login(LoginRequest $request)
     {

@@ -11,6 +11,30 @@ use App\Models\{Article, Comment};
 class CommentController extends Controller
 {
     /**
+     * @OA\Get(
+     *      path="/api/articles/{slug}/comments",
+     *      tags={"Comment"},
+     *      summary="Get a list of comment of some article",
+     *      @OA\Parameter(
+     *          name="slug",
+     *          in="path",
+     *          description="The slug of article",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string",
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  type="string",
+     *              )
+     *          ),
+     *      )
+     * )
      * Display a listing of the resource.
      */
     public function list(string $slug)
@@ -22,6 +46,36 @@ class CommentController extends Controller
 
 
     /**
+     * @OA\Post(
+     *      path="/api/articles/{slug}/comments",
+     *      tags={"Comment"},
+     *      summary="Create a comment in some article",
+     *      description="Only user authenticate can create a comment in some article",
+     *      @OA\Parameter(
+     *          name="slug",
+     *          in="path",
+     *          description="The slug of article",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string",
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Article not found",
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *      ),
+     *      @OA\RequestBody(
+     *          description="Create comment object",
+     *          required=true,
+     *      ),
+     *      security={
+     *          {"token": {}}
+     *      }
+     * )
      * Store a newly created resource in storage.
      */
     public function create(NewCommentRequest $request, string $slug)
@@ -41,15 +95,6 @@ class CommentController extends Controller
     }
 
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
@@ -59,6 +104,37 @@ class CommentController extends Controller
     }
 
     /**
+     * @OA\Delete(
+     *      path="/api/articles/{slug}/comments/{id}",
+     *      tags={"Comment"},
+     *      summary="Delete comment",
+     *      @OA\Parameter(
+     *          name="slug",
+     *          in="path",
+     *          description="The slug of article",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string",
+     *          ),
+     *      ),
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="The id of comment",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string",
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not found",
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *      ),
+     * )
      * Remove the specified resource from storage.
      */
     public function delete(string $slug, $id)
