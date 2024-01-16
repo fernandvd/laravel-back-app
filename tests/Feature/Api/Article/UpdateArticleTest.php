@@ -64,10 +64,10 @@ class UpdateArticleTest extends TestCase
                                 'bio' => $author->bio,
                                 'image' => $author->image,
                                 'following' => false,
-                            ])
+                            ])->etc()
                         )
                 )
-                            );
+        );
     }
 
     public function testUpdateForeignArticle(): void 
@@ -134,6 +134,62 @@ class UpdateArticleTest extends TestCase
         ]);
 
         $response->assertUnauthorized();
+    }
+
+    public function testUpdateArticleWithUserAdmin()
+    {
+        $article = Article::factory()->create();
+        $this->artisan('db:seed', ['--class' => 'RolAndPermissionSeeder']);
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        $userAdmin = User::factory()->rolAdmin()->create();
+
+        $response = $this->actingAs($userAdmin, 'api')
+            ->putJson("/api/articles/".$this->article->slug, [
+                'article' => [
+                    'title' => $this->article->title,
+                    'slug' => $this->article->slug,
+                ],
+            ]);
+        
+        $response->assertOk()->assertJsonPath('article.slug', $this->article->slug);
+
+    }
+
+    public function testUpdateArticleWithUserWithPermission() 
+    {
+        
+        $this->artisan('db:seed', ['--class' => 'RolAndPermissionSeeder']);
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        $userEditor = User::factory()->rolEditor()->create();
+
+        $response = $this->actingAs($userEditor, 'api')
+            ->putJson("/api/articles/".$this->article->slug, [
+                'article' => [
+                    'title' => $this->article->title,
+                    'slug' => $this->article->slug,
+                ],
+            ]);
+        
+        $response->assertOk()->assertJsonPath('article.slug', $this->article->slug);
+    }
+
+    public function testUpdateArticleWithUserWithoutPermission() 
+    {
+        $article = Article::factory()->create();
+        
+        $this->artisan('db:seed', ['--class' => 'RolAndPermissionSeeder']);
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        $userClient = User::factory()->rolClient()->create();
+
+        $response = $this->actingAs($userClient, 'api')
+            ->putJson("/api/articles/".$article->slug, [
+                'article' => [
+                    'title' => $article->title,
+                    'slug' => $article->slug,
+                ],
+            ]);
+        
+        $response->assertForbidden();
     }
 
 }

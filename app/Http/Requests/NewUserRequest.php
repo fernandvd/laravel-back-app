@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
+use App\Enums\RolEnum;
 
 use App\Models\User;
 
@@ -34,7 +36,8 @@ class NewUserRequest extends FormRequest
             'password' => [
                 'required', 'string', 'max:255',
                 Password::min(8),
-            ]
+            ],
+            'rol' => Rule::enum(RolEnum::class),
         ];
     }
 

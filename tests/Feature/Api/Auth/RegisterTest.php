@@ -4,6 +4,7 @@ namespace Tests\Feature\Api\Auth;
 
 use App\Jwt;
 use App\Models\User;
+use App\Enums\RolEnum;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
@@ -11,6 +12,15 @@ use Tests\TestCase;
 class RegisterTest extends TestCase 
 {
     use WithFaker;
+
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->artisan('db:seed', ['--class' => 'RolAndPermissionSeeder']);
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+    }
 
     public function testRegisterUser(): void 
     {
@@ -22,6 +32,7 @@ class RegisterTest extends TestCase
                 'username' => $username,
                 'email' => $email,
                 'password' => $this->faker->password(8),
+                'rol' => RolEnum::CLIENT->value,
             ],
         ]);
 
@@ -29,6 +40,7 @@ class RegisterTest extends TestCase
             ->assertJson(fn (AssertableJson $json) => 
                 $json->has('user', fn (AssertableJson $item) => 
                     $item->whereType('token', 'string')
+                        ->whereType('roles', 'array')
                         ->whereAll([
                             'username' => $username,
                             'email' => $email,
@@ -36,7 +48,7 @@ class RegisterTest extends TestCase
                             'image' => null,
                         ])
                 )
-                        );
+        );
         $token = Jwt\Parser::parse($response['user']['token']);
 
         $this->assertTrue(Jwt\Validator::validate($token));
@@ -51,6 +63,7 @@ class RegisterTest extends TestCase
                 'username' => $user->username,
                 'email' => $user->email,
                 'password' => $this->faker->password(8),
+                'rol' => RolEnum::CLIENT->value,
             ],
         ]);
 

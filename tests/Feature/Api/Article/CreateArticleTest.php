@@ -54,10 +54,10 @@ class CreateArticleTest extends TestCase
                                 'bio' => $author->bio,
                                 'image' => $author->image,
                                 'following' => false,
-                            ])
+                            ])->etc()
                         )
                 )
-                            );
+        );
         
     }
 

@@ -36,9 +36,10 @@ class LoginTest extends TestCase
                             'email' => $user->email,
                             'bio' => $user->bio,
                             'image' => $user->image,
+                            'roles' => [],
                         ])
                 )
-                        );
+        );
 
         $token = Jwt\Parser::parse($response['user']['token']);
         $this->assertTrue(Jwt\Validator::validate($token));

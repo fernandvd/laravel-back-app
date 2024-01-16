@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Arr;
 use OpenApi\Annotations as OA;
 
 
@@ -39,7 +40,11 @@ class AuthController extends Controller
     *                     property="password",
     *                     type="string",
     *                 ),
-    *                 example={"username": "username", "email": "user@example.com", "password": 12345678}
+    *                 @OA\Property(
+    *                     property="rol",
+    *                     type="string",
+    *                 ),
+    *                 example={"username": "username", "email": "user@example.com", "password": 12345678, "rol": "CLIENT"}
     *             )
     *         )
     *     ),
@@ -52,7 +57,11 @@ class AuthController extends Controller
 
         $attributes['password'] = Hash::make($attributes['password']);
 
+        $rol = Arr::pull($attributes, "rol");
+
         $user = User::create($attributes);
+
+        $user->assignRole($rol);
         return (new UserResource($user))
             ->response()
             ->setStatusCode(201);

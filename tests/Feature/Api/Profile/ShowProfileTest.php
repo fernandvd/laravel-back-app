@@ -30,8 +30,9 @@ class ShowProfileTest extends TestCase
                     "username" => $profile->username,
                     "bio" => $profile->bio,
                     "image" => $profile->image,
+                    "roles" => [],
                 ]
-                ]);
+            ]);
 
     }
 

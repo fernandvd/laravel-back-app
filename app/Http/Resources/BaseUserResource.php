@@ -18,6 +18,7 @@ abstract class BaseUserResource extends JsonResource
             'username' => $this->resource->username,
             'bio' => $this->resource->bio,
             'image' => $this->resource->image,
+            'roles' => $this->resource->getRoleNames()->pluck('name'),
         ];
     }
 }

@@ -25,9 +25,9 @@ class ShowUserTest extends TestCase
                             'email' => $user->email,
                             'bio' => $user->bio,
                             'image' => $user->image,
-                        ])
+                        ])->etc()
                 )
-                        );
+        );
         $token = Jwt\Parser::parse($response['user']['token']);
         $this->assertTrue(Jwt\Validator::validate($token));
     }

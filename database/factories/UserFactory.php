@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Enums\RolEnum;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -43,4 +44,36 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * For asign rol admin
+     */
+    public function rolAdmin(): static 
+    {
+        return $this->afterCreating(function ($user) {
+            $user->assignRole(RolEnum::ADMIN->value);
+        });
+    }
+
+    /**
+     * For asign rol editor
+     */
+    public function rolEditor(): static 
+    {
+        return $this->afterCreating(function ($user) {
+            $user->assignRole(RolEnum::EDITOR->value);
+        });
+    }
+
+
+    /**
+     * For asign rol client
+     */
+    public function rolClient(): static 
+    {
+        return $this->afterCreating(function ($user) {
+            $user->assignRole(RolEnum::CLIENT->value);
+        });
+    }
+
 }

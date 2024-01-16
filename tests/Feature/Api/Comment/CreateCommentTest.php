@@ -52,10 +52,10 @@ class CreateCommentTest extends TestCase
                                 'bio' => $this->user->bio,
                                 'image' => $this->user->image,
                                 'following' => false,
-                            ])
+                            ])->etc()
                         )
                 )
-                            );
+        );
     }
 
     public function testCreateCommentValidation(array $data = [])

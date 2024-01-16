@@ -38,10 +38,10 @@ class ShowArticleTest extends TestCase
                                     'username' => $author->username,
                                     'bio' => $author->bio,
                                     'image' => $author->image,
-                                ])
+                                ])->etc()
                         )
                 )
-                                );
+        );
 
     }
 

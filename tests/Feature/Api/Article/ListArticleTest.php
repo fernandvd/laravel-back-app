@@ -46,7 +46,7 @@ class ListArticleTest extends TestCase
                                             'username' => 'string',
                                             'bio' => 'string|null',
                                             'image' => 'string|null',
-                                        ])
+                                        ])->etc()
                                 )
                         )
                     )

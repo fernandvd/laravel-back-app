@@ -53,4 +53,49 @@ class DeleteArticleTest extends TestCase
         
         $this->assertModelExists($this->article);
     }
+
+    public function testDeleteArticleWithUserAdmin()
+    {
+        $article = Article::factory()->create();
+        $this->artisan('db:seed', ['--class' => 'RolAndPermissionSeeder']);
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        $userAdmin = User::factory()->rolAdmin()->create();
+
+        $this->actingAs($userAdmin, 'api')
+            ->deleteJson("/api/articles/{$article->slug}")
+            ->assertNoContent();
+
+        $this->assertModelMissing($article);
+
+    }
+
+    public function testDeleteArticleWithUserWithPermissionForDelete() 
+    {
+        $article = Article::factory()->create();
+        
+        $this->artisan('db:seed', ['--class' => 'RolAndPermissionSeeder']);
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        $userEditor = User::factory()->rolEditor()->create();
+
+        $this->actingAs($userEditor, 'api')
+            ->deleteJson("/api/articles/{$article->slug}")
+            ->assertNoContent();
+
+        $this->assertModelMissing($article);
+    }
+
+    public function testDeleteArticleWithUserWithoutPermission() 
+    {
+        $article = Article::factory()->create();
+        
+        $this->artisan('db:seed', ['--class' => 'RolAndPermissionSeeder']);
+        $this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        $userClient = User::factory()->rolClient()->create();
+
+        $this->actingAs($userClient, 'api')
+            ->deleteJson("/api/articles/{$article->slug}")
+            ->assertForbidden();
+
+        $this->assertModelExists($article);
+    }
 }

@@ -49,9 +49,9 @@ class UpdateUserTest extends TestCase
                             'email' => $email,
                             'bio' => $bio,
                             'image' => $image,
-                        ])
+                        ])->etc()
                 )
-                        );
+        );
         
     }
 

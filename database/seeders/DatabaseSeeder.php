@@ -41,5 +41,9 @@ class DatabaseSeeder extends Seeder
                 'author_id' => $users->random(),
             ]))
             ->create();
+
+        $this->call([
+            RolAndPermissionSeeder::class,
+        ]);
     }
 }
