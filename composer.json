@@ -1,8 +1,8 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "description": "This project implement a fullstack with laravel framework: API with laravel and front using inertia and vue.",
+    "keywords": ["laravel", "inertiajs/vue3"],
     "license": "MIT",
     "require": {
         "php": "^8.1",
@@ -10,6 +10,7 @@
         "ext-pdo": "*",
         "darkaonline/l5-swagger": "^8.5",
         "guzzlehttp/guzzle": "^7.8",
+        "inertiajs/inertia-laravel": "^0.6.11",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",

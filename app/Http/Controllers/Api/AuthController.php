@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
 use OpenApi\Annotations as OA;
+use Inertia\Inertia;
+use App\Providers\RouteServiceProvider;
 
 
 class AuthController extends Controller
@@ -110,6 +112,38 @@ class AuthController extends Controller
                 'user' => [trans('auth.failed')],
             ],
         ], 400);
+    }
+
+    /**
+     * Display the login view
+     */
+    public function create() 
+    {
+        return Inertia::render('Auth/Login');
+    }
+
+    /**
+     * Handle an incomming authentication request
+     */
+    public function store(Request $request) 
+    {
+        var_dump($request->only(['email', 'password']));
+        Auth::attempt($request->only(['email', 'password']));
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
+    /**
+     * Destroy an authenticated session
+     */
+    public function destroy(Request $request) {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect(RouteServiceProvider::HOME);
     }
 
 }

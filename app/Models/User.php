@@ -98,4 +98,21 @@ class User extends Authenticatable implements JwtSubjectInterface
     {
         return $this->belongsToMany(Article::class, 'article_favorite', );
     }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('username', 'like', '%'.$search.'%')
+                    ->orWhere('email', 'like', '%'.$search.'%');
+            });
+        })->when($filters['email_verified_at'] ?? null, function ($query, $email_verified_at) {
+            if ($email_verified_at=='yes') {
+                $query->where(['email_verified_at' => true]);
+            } else {
+                $query->where(['email_verified_at' => false]);
+            }
+        });
+    }
 }

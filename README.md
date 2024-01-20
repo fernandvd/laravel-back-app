@@ -48,6 +48,16 @@ Clone this repository
 
     php artisan test or sail artisan test
 
+## Extra Frontend
+
+There is a part of frontend than use inertia with vue for implement a CRUD for user.
+
+### Install frontend
+    npm run install
+
+### Run fronted in dev mode
+    npm run dev
+
 ## OpenAPI specification 
 
 Swagger UI be live at [http://localhost:8000/api/documentation](http://localhost:8000/api/documentation).
