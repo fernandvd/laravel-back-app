@@ -42,7 +42,7 @@ export default {
     data() {
         return {
             form: useForm({
-                email: 'casimer99@example.com',
+                email: 'dave@example.com',
                 password: 'p@S52024',
                 remember: false,
             }),

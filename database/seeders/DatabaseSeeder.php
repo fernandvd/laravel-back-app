@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             ]))
             ->create();
 
+        User::factory()->state(['email' => "dave@example.com"])->create();
         $this->call([
             RolAndPermissionSeeder::class,
         ]);
