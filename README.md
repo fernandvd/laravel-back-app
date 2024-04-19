@@ -11,14 +11,18 @@ Clone this repository
 
 ### For Local
 
-2) Install dependences 
+1) Install dependences 
 ```
     composer create-project 
 ```
 
+2) Copy".env.example" into ".env" and replace a values of database. 
+
 3) Migrate the database with seeding:
 
     php artisan migrate --seed
+
+    This command generate user with password "p@S52024"
 
 4) Run application
 ```
@@ -29,7 +33,8 @@ Clone this repository
 ```
     npm run install
 ```
-7) Run fronted in dev mode
+
+6) Run fronted in dev mode
 ```
     npm run dev
 ```
