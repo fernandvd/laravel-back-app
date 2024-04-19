@@ -25,8 +25,17 @@ Clone this repository
     php artisan serve
 ```
 
+5) Install frontend
+```
+    npm run install
+```
+7) Run fronted in dev mode
+```
+    npm run dev
+```
 
-### For Laravel Sail
+
+### For Laravel Sail [Still for implement]
 1) Install dependencies:
 
     ```
@@ -46,17 +55,8 @@ Clone this repository
 
 ## Run tests
 
-    php artisan test or sail artisan test
+    php artisan test
 
-## Extra Frontend
-
-There is a part of frontend than use inertia with vue for implement a CRUD for user.
-
-### Install frontend
-    npm run install
-
-### Run fronted in dev mode
-    npm run dev
 
 ## OpenAPI specification 
 
