@@ -23,6 +23,12 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->text('bio')->nullable();
             $table->text('image')->nullable();
+
+            $table->unsignedBigInteger('account_id')->nullable();
+            $table->string('first_name', 255)->nullable();
+            $table->string('last_name', 255)->nullable();
+            $table->boolean('owner')->default(false);
+            $table->softDeletes();
         });
     }
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{LoginRequest, NewUserRequest};
+use App\Http\Requests\{LoginRequest, NewUserRequest, LoginWebRequest};
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class AuthController extends Controller
 {
     /**
      * Register a new user.
-     * 
+     *
      * @param NewUserRequest $request
      * @return \Illuminate\Http\JsonResponse
      * @OA\Post(
@@ -71,10 +71,10 @@ class AuthController extends Controller
 
     /**
      * Login existing user.
-     * 
+     *
      * @param \App\Http\Requests\LoginRequest $request
      * @return \App\Http\Resources\UserResource
-     * 
+     *
      * @OA\Post(
      *     path="/api/users/login",
      *     tags={"Auth"},
@@ -117,7 +117,7 @@ class AuthController extends Controller
     /**
      * Display the login view
      */
-    public function create() 
+    public function create()
     {
         return Inertia::render('Auth/Login');
     }
@@ -125,11 +125,12 @@ class AuthController extends Controller
     /**
      * Handle an incomming authentication request
      */
-    public function store(Request $request) 
+    public function store(LoginWebRequest $request)
     {
-        var_dump($request->only(['email', 'password']));
-        Auth::attempt($request->only(['email', 'password']));
+        //var_dump($request->only(['email', 'password']));
+        //Auth::attempt($request->only(['email', 'password']));
 
+        $request->authenticate();
         $request->session()->regenerate();
 
         return redirect()->intended(RouteServiceProvider::HOME);

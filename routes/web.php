@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Web\ContactsController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\UserController;
 
@@ -36,4 +37,14 @@ Route::name('users.')->middleware('auth')->group(function () {
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('edit');
     Route::put('users/{user}', [UserController::class, 'update'])->name('update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('destroy');
+});
+
+Route::controller(ContactsController::class)->name('contacts.')->middleware(['auth'])->group(function () {
+    Route::get('contacts', 'index')->name('index');
+    Route::get('contacts/create', 'create')->name('create');
+    Route::post('contacts', 'store')->name('store');
+    Route::get('contacts/{contact}/edit', 'edit')->name('edit');
+    Route::put('contacts/{contact}', 'update')->name('update');
+    Route::delete('contacts/{contact}', 'destroy')->name('destroy');
+    Route::put('contacts/{contact}/restore', 'restore')->name('restore');
 });
