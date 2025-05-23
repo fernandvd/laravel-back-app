@@ -5,6 +5,10 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Web\ContactsController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\UserController;
+use Illuminate\Http\Request;
+use League\Glide\Responses\SymfonyResponseFactory;
+use League\Glide\ServerFactory;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +41,7 @@ Route::name('users.')->middleware('auth')->group(function () {
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('edit');
     Route::put('users/{user}', [UserController::class, 'update'])->name('update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('destroy');
+    Route::put('users/{user}/restore', [UserController::class, 'restore'])->name('restore');
 });
 
 Route::controller(ContactsController::class)->name('contacts.')->middleware(['auth'])->group(function () {
@@ -48,3 +53,16 @@ Route::controller(ContactsController::class)->name('contacts.')->middleware(['au
     Route::delete('contacts/{contact}', 'destroy')->name('destroy');
     Route::put('contacts/{contact}/restore', 'restore')->name('restore');
 });
+
+
+Route::get('/img/{path}', function (Request $request, $path) {
+    $filesystem = Storage::disk();
+    $server = ServerFactory::create([
+        'response' => new SymfonyResponseFactory($request),
+        'source' => $filesystem->getDriver(),
+        'cache' => $filesystem->getDriver(),
+        'cache_path_prefix' => '.glide-cache',
+    ]);
+
+    return $server->getImageResponse($path, $request->query());
+})->where('path', '.*')->name('image');

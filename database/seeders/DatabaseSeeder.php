@@ -56,9 +56,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'johndoe@example.com',
             'password' => 'secret',
             'owner' => true,
+            'image' => null,
         ]);
 
-        User::factory(5)->create(['account_id' => $account->id]);
+        User::factory(5)->create(['account_id' => $account->id, 'image' => null]);
 
         $organizations = Organization::factory(100)
             ->create(['account_id' => $account->id]);

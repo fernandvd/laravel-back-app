@@ -4,6 +4,20 @@
         <h1 class="mb-8 text-3xl font-bold">Users: {{ users?.length }}</h1>
         <div class="flex items-center justify-between mb-6">
             <search-filter v-model="form.search" class="mr-4 w-full max-w-md" @reset="reset">
+                <label class="block text-gray-700 ">
+                    Role:
+                </label>
+                <select v-model="form.role" class="form-select mt-1 w-full">
+                    <option :value="null">Selection</option>
+                    <option value="user">User</option>
+          <option value="owner">Owner</option>
+                </select>
+                <label class="block mt-4 text-gray-700">Trashed:</label>
+        <select v-model="form.trashed" class="form-select mt-1 w-full">
+          <option :value="null" />
+          <option value="with">With Trashed</option>
+          <option value="only">Only Trashed</option>
+        </select>
                 <label class="block text-gray-700">Email verified?: </label>
                 <select v-model="form.email_verified_at" class="form-select mt-1 w-full">
                     <option :value="null" />
@@ -21,13 +35,14 @@
                 <tr class="text-left font-bold">
                     <th class="pb-4 pt-6 px-6">Name</th>
                     <th class="pb-4 pt-6 px-6">Email</th>
-                    <th class="pb-4 pt-6 px-6" colspan="2">Username</th>
+                    <th class="pb-4 pt-6 px-6" colspan="2">Role</th>
                 </tr>
                 <tr v-for="user in users" :key="user.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
                         <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/users/${user.id}/edit`">
                             <img v-if="user.image" class="block -my-2 mr-2 w-5 h-5 rounded-full" :src="user.image" />
                             {{ user.name }}
+                            <icon v-if="user.deleted_at" name="trash" class="shrink-0 ml-2 w-3 h-3 fill-gray-400" />
                         </Link>
                     </td>
                     <td class="border-t">
@@ -37,7 +52,7 @@
                     </td>
                     <td class="border-t">
                         <Link class="flex items-center px-6 py-4" :href="`/users/${user.id}/edit`" tabindex="-1">
-                        {{ user.username }}
+                        {{ user.owner ? 'Owner' : 'User' }}
                         </Link>
                     </td>
                     <td class="w-px border-t">
@@ -77,15 +92,17 @@ export default {
             form: {
                 search: this.filters.search,
                 email_verified_at: this.filters.email_verified_at,
+                role: this.filters.role,
+                trashed: this.filters.trashed,
             },
         }
     },
     watch: {
         form: {
-            deep: true, 
+            deep: true,
             handler: throttle(function () {
                 this.$inertia.get('/users', pickBy(this.form), { preserveState: true})
-            }, 100),
+            }, 150),
         },
     },
     methods: {
