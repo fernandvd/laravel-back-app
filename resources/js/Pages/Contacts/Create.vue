@@ -13,7 +13,7 @@
                     <text-input v-model="form.first_name" :error="form.errors.first_name" class="pb-8 pr-6 w-full lg:w-1/2 " label="First name" />
                     <text-input v-model="form.last_name" :error="form.errors.last_name" class="pb-8 pr-6 w-full lg:w-1/2" label="Last name" />
                     <select-input v-model="form.organization_id" :error="form.errors.organization_id" class="pb-8 pr-6 w-full lg:w-1/2" label="Organization">
-                        <option :value="null" />
+                        <option :value="null" >Selection</option>
                         <option v-for="organization in organizations" :key="organization.id" :value="organization.id">
                             {{ organization.name }}
                         </option>
@@ -73,7 +73,7 @@ export default {
                 address: '',
                 city: '',
                 region: '',
-                country: '',
+                country: null,
                 postal_code: '',
             }),
         }

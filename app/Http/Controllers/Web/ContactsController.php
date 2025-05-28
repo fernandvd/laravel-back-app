@@ -48,6 +48,11 @@ class ContactsController extends Controller
     {
         $user = Auth::user();
         if (Auth::user()->account == null) {
+            $account = Account::first();
+            if ($account) {
+                $user->account_id = $account->id;
+                $user->save();
+            }
             return inertia('Contacts/Create', [
                 'organizations' => []
             ]);

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Web\ContactsController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\OrganizationsController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Http\Request;
 use League\Glide\Responses\SymfonyResponseFactory;
@@ -52,6 +53,16 @@ Route::controller(ContactsController::class)->name('contacts.')->middleware(['au
     Route::put('contacts/{contact}', 'update')->name('update');
     Route::delete('contacts/{contact}', 'destroy')->name('destroy');
     Route::put('contacts/{contact}/restore', 'restore')->name('restore');
+});
+
+Route::controller(OrganizationsController::class)->name('organizations.')->prefix('organizations/')->middleware(['auth'])->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{organization}/edit', 'edit')->name('edit');
+    Route::put('/{organization}', 'update')->name('update');
+    Route::delete('/{organization}', 'destroy')->name('destroy');
+    Route::put('/{organization}/restore', 'restore')->name('restore');
 });
 
 

@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             RolAndPermissionSeeder::class,
         ]);
 
-        $account = Account::create(['name' => 'Acme Corporation']);
+        $account = Account::create(['name' => 'Dave Corporation']);
 
         User::factory()->create([
             'account_id' => $account->id,
