@@ -31,7 +31,7 @@ Clone this repository
 
 5) Install frontend
 ```
-    npm run install
+    npm install
 ```
 
 6) Run fronted in dev mode
